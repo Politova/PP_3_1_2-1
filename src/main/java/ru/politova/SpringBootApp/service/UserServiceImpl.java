@@ -1,7 +1,6 @@
 package ru.politova.SpringBootApp.service;
 
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,40 +9,43 @@ import ru.politova.SpringBootApp.model.User;
 
 import java.util.List;
 
+
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserDao userDao;
+    private final UserDao userDao;
 
-    @Override
-    public List<User> getUsers() {
-        return userDao.getUsers();
+    public UserServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
     }
 
+    @Transactional
     @Override
-    public User showUserById(Long id) {
-        return userDao.showUserById(id);
+    public void addUser(User user) {
+        userDao.save(user);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public User getUser(int id) {
+        return userDao.show(id);
     }
 
     @Override
     @Transactional
-    public void saveUser(User user) {
-        userDao.saveUser(user);
-
+    public void updateUser(User user) {
+        userDao.update(user.getId(), user);
     }
 
-    @Override
     @Transactional
-    public void deleteUserById(Long id) {
-        userDao.deleteUserById(id);
-
+    @Override
+    public void deleteUser(int id) {
+        userDao.delete(id);
     }
 
+    @Transactional(readOnly = true)
     @Override
-    @Transactional
-    public void updateUserById(Long id, User user) {
-        userDao.updateUserById(id, user);
-
+    public List<User> listUsers() {
+        return userDao.listUsers();
     }
 }

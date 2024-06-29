@@ -4,15 +4,16 @@ import ru.politova.SpringBootApp.model.User;
 
 import java.util.List;
 
+
 public interface UserService {
-    List<User> getUsers();
+    void addUser(User user);
 
-    User showUserById(Long id);
+    User getUser(int id);
 
-    void saveUser(User user);
+    void updateUser(User user);
 
-    void deleteUserById(Long id);
+    void deleteUser(int id);
 
-    void updateUserById(Long id, User user);
+    List<User> listUsers();
+
 }
-
